@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Access;
 use \Datetime;
-
+use Monolog\Logger;
 
 class HelloWorldController extends AbstractController
 {
@@ -22,12 +22,14 @@ class HelloWorldController extends AbstractController
 
         try 
         {
-          
-           $this->logAccess($prefLanguage, $ip, $timeStamp);
+            throw new \Exception("Test");
+            
+            $this->logAccess($prefLanguage, $ip, $timeStamp);
         } 
         catch (\Exception  $e) 
         {
-           
+            $logger = new Logger('logger');
+            $logger->error('Logger is now Ready');
         }
        
 
