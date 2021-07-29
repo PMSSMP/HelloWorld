@@ -8,12 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Access;
 use \Datetime;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 class HelloWorldController extends AbstractController
 {
-    #[Route('/hello/world', name: 'hello_world')]
-    public function index(Request $request): Response
+    /**
+     * @Route("/hello/world", name="hello_world")
+     */
+    public function index(Request $request, LoggerInterface $logger): Response
     {
         
         $prefLanguage = $request->attributes->get('preferedLanguage');
@@ -22,16 +24,15 @@ class HelloWorldController extends AbstractController
 
         try 
         {
-            throw new \Exception("Test");
+            //throw new \Exception("test");
             
             $this->logAccess($prefLanguage, $ip, $timeStamp);
         } 
-        catch (\Exception  $e) 
+        catch (\Exception $ex) 
         {
-            $logger = new Logger('logger');
-            $logger->error('Logger is now Ready');
+            $logger->error("Error while writing to Database: " . $ex);
         }
-       
+     
 
 
         $totalAccesses = $this->getDoctrine()
